@@ -29,6 +29,6 @@
         that: dehydrated_accept_letsencrypt_terms
 
     - name: Register to CA
-      command: "{{ dehydrated_install_root }}/dehydrated --register --accept-terms"
+      command: "{{ dehydrated_install_root }}/dehydrated --config /etc/dehydrated/{{ dehydrated_config_file }} --register --accept-terms"
   # \end block register
   when: "not ca_stat.stat.exists or (ca_stat.stat.isreg is defined and not ca_stat.stat.isreg)"

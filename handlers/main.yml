@@ -3,10 +3,10 @@
 # This handler needs to be defined before "run dehydrated",
 # as handlers run in the order __defined__, not _called__.
 - name: update account details
-  command: "{{ dehydrated_install_root }}/dehydrated --account"
+  command: "{{ dehydrated_install_root }}/dehydrated --account --config /etc/dehydrated/{{ dehydrated_config_file }}"
 
 - name: run dehydrated
-  command: "{{ dehydrated_install_root }}/dehydrated -c"
+  command: "{{ dehydrated_install_root }}/dehydrated --cron --config /etc/dehydrated/{{ dehydrated_config_file }} --domains-txt /etc/dehydrated/{{ dehydrated_domains_txt }}"
   when: dehydrated_run_on_changes
 
 - name: Reload systemd

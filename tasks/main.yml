@@ -23,7 +23,7 @@
 
 - name: Generate dehydrated config
   template:
-    dest: /etc/dehydrated/config
+    dest: "/etc/dehydrated/{{ dehydrated_config_file }}"
     src: config.j2
     owner: root
     group: root
@@ -46,7 +46,7 @@
     minute: "{{ 59|random(seed=inventory_hostname) }}"
     hour: "{{ 4|random(seed=inventory_hostname) }}"
     user: root
-    job: "{{ dehydrated_install_root }}/dehydrated -c"
+    job: "{{ dehydrated_install_root }}/dehydrated --cron --config /etc/dehydrated/{{ dehydrated_config_file }} --domains-txt /etc/dehydrated/{{ dehydrated_domains_txt }}"
     cron_file: dehydrated
     state: "{{ 'present' if dehydrated_cronjob else 'absent' }}"
 

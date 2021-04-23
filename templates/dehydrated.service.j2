@@ -1,11 +1,11 @@
 [Unit]
 Description=ACME Cert renewal
-ConditionFileNotEmpty=/etc/dehydrated/domains.txt
+ConditionFileNotEmpty=/etc/dehydrated/{{ dehydrated_domains_txt }}
 {% if dehydrated_systemd_timer_onfailure is defined %}
 OnFailure={{ dehydrated_systemd_timer_onfailure }}
 {% endif %}
 
 [Service]
 User=root
-ExecStart={{ dehydrated_install_root }}/dehydrated --cron
+ExecStart={{ dehydrated_install_root }}/dehydrated --cron --config /etc/dehydrated/{{ dehydrated_config_file }} --domains-txt /etc/dehydrated/{{ dehydrated_domains_txt }}
 Type=oneshot

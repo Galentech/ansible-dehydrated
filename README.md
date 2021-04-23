@@ -91,7 +91,7 @@ dehydrated_cronjob: no
 
 The Configration for single certificates can be overridden using `dehydrated_cert_config`.
 
-`dehydrated_cert_config` must be a list of dicts. Only the elemenent `name:` is mandatory ans must match a certificate name. The certificate name is either the first domain listed in domains.txt or the certificate alias, if defined.
+`dehydrated_cert_config` must be a list of dicts. Only the elemenent `name:` is mandatory ans must match a certificate name. The certificate name is either the first domain listed in `dehydrated_domains_txt` or the certificate alias, if defined.
 
 Format is as follows:
 

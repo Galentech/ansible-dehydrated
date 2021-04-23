@@ -1,7 +1,7 @@
 ---
 - name: Generate dehydrated domains.txt
   lineinfile:
-    dest: /etc/dehydrated/domains.txt
+    dest: "/etc/dehydrated/{{ dehydrated_domains_txt }}"
     line: "{{ item }}"
     regexp: '^{{ item }}'
     create: true
