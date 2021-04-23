@@ -47,6 +47,7 @@ dehydrated_hook_scripts | Add additional scripts to hooks-Directory | []
 dehydrated_key_algo | Keytype to generate (rsa, prime256v1, secp384r1) | rsa
 dehydrated_keysize | Size of Key (only for rsa Keys) | 4096
 dehydrated_ca | CA to use | https://acme-v02.api.letsencrypt.org/directory
+dehydrated_ca_name | Arbitrary name to support multiple CAs (must be unique) | letsencrypt
 dehydrated_cronjob | Install cronjob for certificate renewals | yes
 dehydrated_systemd_timer | Use systemd timer for certificate renewals | no
 dehydrated_config_extra | Add arbitrary text to config |
@@ -194,6 +195,26 @@ TIMESTAMP | Timestamp when the  certificate was created.
         ssh deploy@192.0.2.1 sudo service someservice reload
   roles:
     - clutterbox.dehydrated
+```
+
+### Using multiple CAs
+```yaml
+- hosts: servers
+
+  roles:
+    - role: clutterbox.dehydrated
+      vars:
+        dehydrated_domains:
+          - example.com
+    - role: clutterbox.dehydrated
+      vars:
+        dehydrated_domains:
+          - example2.com
+        dehydrated_ca: https://acme.digicert.com/v2/acme/directory/
+        dehydrated_ca_name: digicert
+        dehydrated_config_file: "{{ dehydrated_ca_name }}_config"
+        dehydrated_domains_txt: "{{ dehydrated_ca_name }}_domains.txt"
+
 ```
 
 ## Additinal hook scripts

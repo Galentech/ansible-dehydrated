@@ -13,8 +13,15 @@
   systemd:
     daemon_reload: true
 
-- name: Remove timer
+- name: Remove old timer
+  # Before multi-CA support, systemd files were not suffixed with the CA name.
   systemd:
     name: dehydrated.timer
+    enabled: no
+    state: stopped
+
+- name: Remove timer
+  systemd:
+    name: "dehydrated-{{ dehydrated_ca_name }}.timer"
     enabled: no
     state: stopped

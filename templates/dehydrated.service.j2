@@ -1,5 +1,5 @@
 [Unit]
-Description=ACME Cert renewal
+Description=ACME Cert renewal for {{ dehydrated_ca_name }}
 ConditionFileNotEmpty=/etc/dehydrated/{{ dehydrated_domains_txt }}
 {% if dehydrated_systemd_timer_onfailure is defined %}
 OnFailure={{ dehydrated_systemd_timer_onfailure }}

@@ -2,28 +2,40 @@
 
 - name: Upload systemd service files
   template:
-    src: "{{ item }}.j2"
-    dest: /etc/systemd/system/{{ item }}
+    src: "{{ item.src }}.j2"
+    dest: /etc/systemd/system/{{ item.dest }}
   loop:
-    - dehydrated.service
-    - dehydrated.timer
+    - src: "dehydrated.service"
+      dest: "dehydrated-{{ dehydrated_ca_name }}.service"
+    - src: "dehydrated.timer"
+      dest: "dehydrated-{{ dehydrated_ca_name }}.timer"
   when: dehydrated_systemd_timer
   notify: Reload systemd
+
+- name: Remove old system service files
+  # Before multi-CA support, systemd files were not suffixed with the CA name.
+  file:
+    path: /etc/systemd/system/{{ item }}
+    state: absent
+  loop:
+    - "dehydrated.service"
+    - "dehydrated.timer"
+  notify: Remove old timer
 
 - name: Remove system service files
   file:
     path: /etc/systemd/system/{{ item }}
     state: absent
   loop:
-    - dehydrated.service
-    - dehydrated.timer
+    - "dehydrated-{{ dehydrated_ca_name }}.service"
+    - "dehydrated-{{ dehydrated_ca_name }}.timer"
   when: not dehydrated_systemd_timer
   notify: Remove timer
 
 - name: Activate systemd timer
   systemd:
     daemon_reload: yes
-    name: dehydrated.timer
+    name: "dehydrated-{{ dehydrated_ca_name }}.timer"
     enabled: yes
     state: started
   when: dehydrated_systemd_timer
